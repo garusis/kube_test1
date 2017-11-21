@@ -6,7 +6,7 @@ const schema = require('schema-object');
 const _ = require('lodash');
 const assistantModel = require('./assistant.model');
 const instanceRouter = express.Router();
-const assistworkshop = require('../assistantworkshop')
+
 
 
 const Assistant = new schema ({
@@ -36,7 +36,6 @@ route.get('/', function(req, res){
 })
 
 function instanceValidator(req, res, next){
-    let assistantmp = {};
     assistantModel.find(req.params.id).then( function (assist){
         if(assist){
             req.assistant=assist;
@@ -65,6 +64,6 @@ instanceRouter.put('/', function(req, res){
     return asistantModel.update(req.assistant.id, req.body).then(value=> res.json(value)).catch(err=>res.status(500).send(err.message));
 })
 
-instanceRouter.use('/assistant', assistworkshop );
+
 
 module.exports = route;

@@ -13,8 +13,8 @@ AssistantWorkshop.findAll = function(query){
 AssistantWorkshop.find = function(id){
     return AssistantWorkshop.findAll({id:id}).first();
 }
-AssistantWorkshop.remove = function(id){
-    return knex('assistantworkshop').where({id:id}).del().first();
+AssistantWorkshop.remove = function(query){
+    return knex('assistantworkshop').where(query).del().first();
 }
 AssistantWorkshop.update = function(id, body){
     return knex('assistantworkshop').where({id:id}).update(body);

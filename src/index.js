@@ -4,9 +4,8 @@
 const express = require('express');
 const app = express();
 const body = require('body-parser');
-const workshops = require('./workshop');
-const assistants = require('./assistant');
-const workshoper = require('./workshoper')
+const workshops = require('./workshops');
+const assistants = require('./assistants');
 
 app.listen(3000, function(){
     console.log('example app listening on 3000');
@@ -16,8 +15,7 @@ app.use(body.urlencoded({extended:false}));
 
 app.use(body.json());
 
-app.use('/workshop', workshops);
-app.use('/assistant', assistants);
-app.use('/workshoper', workshoper);
+app.use('/workshops', workshops);
+app.use('/assistants', assistants);
 
 module.exports = app;

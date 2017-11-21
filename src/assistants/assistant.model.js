@@ -20,4 +20,5 @@ Assistant.update = function(id, body){
     return knex('assistants').where({id:id}).update(body);
 }
 
-module.exports = Asistant;
+
+module.exports = Assistant;

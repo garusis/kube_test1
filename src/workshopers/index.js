@@ -1,8 +1,8 @@
 "use strict"
 const express = require('express');
 const route = express.Router();
+const instanceRouter =  express.Router(); //left
 const schema = require('schema-object');
-const _ = require('lodash');
 const workshoperModel = require('./workshoper.model');
 
 const Workshoper = new schema ({
@@ -15,10 +15,10 @@ const Workshoper = new schema ({
 const Workshoperput = new schema ({
     name: {type: String},
     photo: {type: String},
-    resume: {type: String},
-    workshopId: {type: Number}
-})
+    resume: {type: String}    
+},{strict: true})
 
+//Deleted useless router middleware
 
 route.post('/', function(req, res){
     let workshoper = new Workshoper(req.body);
@@ -31,30 +31,11 @@ route.post('/', function(req, res){
 })
 
 route.get('/', function(req, res){
-    if(_.isEmpty(req.query)){
-        return workshoperModel.findAll().then( value => res.json(value)).catch(err => res.status(500).send(err.message));
-    }
-    return workshoperModel.findAll(req.query).then(value => res.json(value)).catch(err=> res.status(500).send(err.message));
-})
-
-function instanceValidator(req, res, next){
-    workshoperModel.find(req.params.id).then( function (ws){
-        if(ws){
-            req.workshoper=ws;
-            return next();
-        }
-        return res.sendStatus(404);
-    }).catch(err => res.status(500).send(err.message));    
-}
-
-route.use('/:id', instanceValidator, instanceRouter);
-
-instanceRouter.get('/', function(req, res){
-    return res.json(req.workshoper);
+    return workshoperModel.find({workshopid : req.workshop.id}).then(value => res.json(value)).catch(err=> res.status(500).send(err.message));
 })
     
 instanceRouter.delete('/', function(req, res){
-    return workshoperModel.remove(req.workshoper.id).then( value => res.json(value)).catch(err=> res.status(500).send(err.message));
+    return workshoperModel.remove({workshopid:req.workshop.id}).then( value => res.json(value)).catch(err=> res.status(500).send(err.message));
 })
 
 instanceRouter.put('/', function(req, res){
@@ -63,7 +44,7 @@ instanceRouter.put('/', function(req, res){
         return res.status(422).json(workshopertmp.getErrors().map(function(err){
             return {"Error": err.errorMessage, "Name": err.fieldSchema.name}}));
     }
-    return workshoperModel.update(req.workshoper.id, req.body).then(value=> res.json(value)).catch(err=>res.status(500).send(err.message));
+    return workshoperModel.update(req.workshop.id, req.body).then(value=> res.json(value)).catch(err=>res.status(500).send(err.message));
 })
 
 

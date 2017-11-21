@@ -13,11 +13,11 @@ Workshoper.findAll = function(query){
 Workshoper.find = function(id){
     return Workshoper.findAll({id:id}).first();
 }
-Workshoper.remove = function(id){
-    return knex('workshopers').where({id:id}).del().first();
+Workshoper.remove = function(query){
+    return knex('workshopers').where(query).del().first();
 }
 Workshoper.update = function(id, body){
-    return knex('workshopers').where({id:id}).update(body);
+    return knex('workshopers').where({workshopid:id}).update(body);
 }
 
 module.exports = Workshoper;
